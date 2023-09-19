@@ -6,7 +6,7 @@ bot = telebot.TeleBot("6548015444:AAGe-BAM0B9wJdnglW5m3JCZV1i-BQTIVks")
 
 
 # Путь для сохранения фотографий шаблона стеллажа
-template_images_path = "template_images/"
+template_images_path = "../template_images/"
 
 @bot.message_handler(content_types=["photo"])
 def handle_template_image(message):
