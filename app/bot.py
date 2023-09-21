@@ -13,6 +13,7 @@ template_images_path = "../template_images/"
 # Хранилище хешей
 hash_storage = {}
 
+
 @bot.message_handler(content_types=["text", "photo"])
 def handle_template_image(message):
 
@@ -34,9 +35,7 @@ def handle_template_image(message):
 
             # Генерируем уникальное имя файла
             file_extension = os.path.splitext(file_path)[-1]
-            unique_filename = (
-                template_images_path + str(uuid.uuid4()) + file_extension
-            )
+            unique_filename = template_images_path + str(uuid.uuid4()) + file_extension
 
             # Сохраняем фотографию на сервере
             with open(unique_filename, "wb") as new_file:
@@ -48,11 +47,13 @@ def handle_template_image(message):
             if len(hash_storage) == 0:
                 hash_storage["rack_template"] = image_hash
                 bot.send_message(
-                    message.from_user.id, "Фотография шаблона стеллажа успешно сохранена."
+                    message.from_user.id,
+                    "Фотография шаблона стеллажа успешно загружена.",
                 )
                 print(hash_storage)
             else:
                 hash_storage["rack"] = image_hash
+                bot.send_message(message.from_user.id, "Фотография стеллажа загружена")
 
             print(hash_storage)
             if len(hash_storage) == 2:
@@ -60,8 +61,12 @@ def handle_template_image(message):
                 hash1 = list(hash_storage.values())[0]
                 hash2 = list(hash_storage.values())[1]
                 difference = CompareHash(hash1, hash2)
-                hash_storage.clear()
-                bot.send_message(message.from_user.id, f"Разница между хешами: {difference}")
+                in_percent = int((difference / 64) * 100)
+                hash_storage.clear()  # Очистить хеш хранилище
+                bot.send_message(
+                    message.from_user.id,
+                    f"Разница между хешами: {difference}; отличие {in_percent} %",
+                )
             print(hash_storage)
 
         except Exception as e:
