@@ -1,11 +1,8 @@
 import cv2
 import difflib
 
-a = "../template_images/A.jpg"
-b = "../template_images/B.jpg"
 
-
-def CalcImageHash(img):
+def calc_image_hash(img):
     """Функция вычисления хэша входящей картинки"""
     image = cv2.imread(img)  # Прочитать картинку
     resized = cv2.resize(
@@ -34,22 +31,3 @@ def CalcImageHash(img):
 
     return _hash
 
-
-def CompareHash(hash1, hash2):
-    """Сравнивает два хэша, чем меньше возвращаемое значение тем более похоже два хеша-изображений"""
-    l = len(hash1)
-    i = 0
-    count = 0
-    while i < l:
-        if hash1[i] != hash2[i]:
-            count = count + 1
-        i = i + 1
-
-    return count
-
-
-# hash1 = CalcImageHash(a)
-# hash2 = CalcImageHash(b)
-# print(hash1)
-# print(hash2)
-# print(CompareHash(hash1, hash2))
